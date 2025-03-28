@@ -10,14 +10,12 @@ import {
   Input,
   Portal,
   Text,
-  useDialog,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useDetails } from "~/hooks/useDetails";
 
 export default function Home() {
-  const dialog = useDialog();
   const { username, jobTitle, hasLoaded, updateDetails } = useDetails();
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
@@ -39,13 +37,11 @@ export default function Home() {
   }, [username, jobTitle]);
 
   const onClose = () => {
-    console.log("FIRE");
     setCurrentUsername(username);
     setCurrentJobTitle(jobTitle);
   };
 
   const onSave = (e: React.FormEvent) => {
-    console.log("SAVE");
     e.preventDefault();
     if (!currentUsername || !currentJobTitle) {
       return alert("Please fill out all fields");
@@ -88,8 +84,8 @@ export default function Home() {
                 <Dialog.Header>
                   <Dialog.Title>Update your details</Dialog.Title>
                 </Dialog.Header>
-                <form className="flex flex-col gap-4" onSubmit={onSave}>
-                  <Dialog.Body>
+                <form onSubmit={onSave}>
+                  <Dialog.Body className="flex flex-col gap-4">
                     <Field.Root invalid={!currentUsername}>
                       <Field.Label>Username</Field.Label>
                       <Input
@@ -115,7 +111,6 @@ export default function Home() {
                         Cancel
                       </Button>
                     </Dialog.ActionTrigger>
-
                     <Button disabled={isDisabled} type="submit">
                       Save
                     </Button>
@@ -132,11 +127,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="flex items-center justify-center flex-grow">
-        {hasLoaded ? (
-          <main className="flex flex-col gap-4">{`Hello! ${username} with job title ${jobTitle}`}</main>
-        ) : (
-          <Text>Loading...</Text>
-        )}
+        <Text>Placeholder for paginated list.</Text>
       </div>
     </div>
   );
