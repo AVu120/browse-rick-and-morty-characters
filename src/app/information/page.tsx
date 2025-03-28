@@ -96,7 +96,6 @@ export default function Home() {
         variables: { page },
       })
       .then((result) => {
-        console.log({ result });
         const charactersResponse: Character[] =
           result.data.characters.results.map((result: Character) => ({
             name: result.name,
@@ -106,7 +105,6 @@ export default function Home() {
             species: result.species,
             status: result.status,
           }));
-        console.log({ charactersResponse });
         const paginationResponse: Pagination = result.data.characters.info;
         setPagination({
           count: paginationResponse.count,
