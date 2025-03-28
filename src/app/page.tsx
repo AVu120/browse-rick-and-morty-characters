@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { Field, Input, Heading, Button, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -27,6 +27,8 @@ import { useEffect, useState } from "react";
 19. (Would do if had more time) Block direct git push to remote main branch, get these CI tests to run on PR branch and block merge until this passes. 
 */
 export default function Home() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -59,7 +61,8 @@ export default function Home() {
 
     localStorage.setItem("username", username);
     localStorage.setItem("jobTitle", jobTitle);
-    alert("Details saved successfully");
+    alert("Details saved successfully. Now navigating to information page.");
+    router.push("/information");
   };
 
   const isDisabled = !username || !jobTitle;
