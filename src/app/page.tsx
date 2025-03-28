@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Field, Input, Heading, Button, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useCheckDetails } from "~/hooks/useCheckDetails";
+import { useState } from "react";
+import { useDetails } from "~/hooks/useDetails";
 
 /* TODO:
 1. Create entry form for username + job title page.
@@ -28,23 +28,10 @@ import { useCheckDetails } from "~/hooks/useCheckDetails";
 19. (Would do if had more time) Block direct git push to remote main branch, get these CI tests to run on PR branch and block merge until this passes. 
 */
 export default function Home() {
-  useCheckDetails();
+  const { username, setUsername, jobTitle, setJobTitle, hasLoaded } =
+    useDetails();
   const router = useRouter();
-
-  const [username, setUsername] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  // Represents completion of the initial load of the page (and fetching of any potential user data from localStorage).
-  // Added to prevent weird flickering of the form/page when the user data is being fetched from localStorage on initial page load. This is done by
-  // rendering a loading indicator until the user data has been fetched and the form can be rendered with the user data.
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-  // Need to do this in useEffect since window object is only available after component has mounted on client. Doing this outside of useEffect results in window not defined error on server side.
-  useEffect(() => {
-    setUsername(localStorage.getItem("username") || "");
-    setJobTitle(localStorage.getItem("jobTitle") || "");
-    setHasLoaded(true);
-  }, []);
 
   const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);

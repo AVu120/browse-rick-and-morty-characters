@@ -1,20 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useCheckDetails } from "~/hooks/useCheckDetails";
+import { useDetails } from "~/hooks/useDetails";
 import { Text } from "@chakra-ui/react";
 
 export default function Home() {
-  useCheckDetails();
-  const [username, setUsername] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-  useEffect(() => {
-    setUsername(localStorage.getItem("username") || "");
-    setJobTitle(localStorage.getItem("jobTitle") || "");
-    setHasLoaded(true);
-  }, []);
+  const { username, jobTitle, hasLoaded } = useDetails();
 
   return (
     <div className="flex items-center justify-center min-h-screen">
