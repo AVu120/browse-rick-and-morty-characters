@@ -19,6 +19,15 @@ import { gql } from "@apollo/client";
 import { apolloClient } from "~/lib/apollo-client";
 import { CardHorizontal } from "~/components/ui/card";
 
+interface Character {
+  name: string;
+  created: string;
+  gender: string;
+  image: string;
+  species: string;
+  status: string;
+}
+
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int) {
     characters(page: $page) {
@@ -47,7 +56,7 @@ export default function Home() {
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // const [characters, setCharacters] = useState([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
 
   const changeCurrentUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +75,21 @@ export default function Home() {
         query: GET_CHARACTERS,
         variables: { page },
       })
-      .then((result) => console.log(result))
+      .then((result) => {
+        console.log({ result });
+        const charactersResponse: Character[] =
+          result.data.characters.results.map((result: Character) => ({
+            name: result.name,
+            created: result.created,
+            gender: result.gender,
+            image: result.image,
+            species: result.species,
+            status: result.status,
+          }));
+        console.log({ charactersResponse });
+
+        setCharacters(charactersResponse);
+      })
       .catch((error) => console.error(error));
   };
 
@@ -172,7 +195,9 @@ export default function Home() {
 
       {/* Main Content */}
       <Box className="flex flex-col gap-4 items-center justify-center flex-grow">
-        {<CardHorizontal />}
+        {characters.map(({ name, image }) => (
+          <CardHorizontal key={name} name={name} imageUrl={image} />
+        ))}
       </Box>
     </Box>
   );
