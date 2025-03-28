@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Field, Input, Heading, Button, Text } from "@chakra-ui/react";
-import { useState } from "react";
 import { useDetails } from "~/hooks/useDetails";
 
 /* TODO:
