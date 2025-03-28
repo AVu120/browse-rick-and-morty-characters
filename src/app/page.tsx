@@ -1,12 +1,13 @@
-import { Button, HStack } from "@chakra-ui/react";
+// import { Input } from "@chakra-ui/react";
 
 /* TODO:
-1. Create entry form page.
+1. Create entry form for username + job title page.
 2. fill out and click submit.
 3. save to zustand with local storage persistance
 4. navigate to separata page called "Information Page"
 5. show username + job title in header or footer
 6. enable user to change username + job title. 
+7. on load on website again on any page, check if username + job title has been set, if not redirect user to form page. If yes, redirect to "information page". Create custom hook for this.
 5. on load of information page, query public gralhQL API
 6. render first page of results, including data (just name for now) and images in a list of items
 7. Add pagination
@@ -26,14 +27,8 @@ export default function Home() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <main>
-        <HStack>
-          <Button colorPalette="teal" variant="solid">
-            Click me
-          </Button>
-          <Button colorPalette="teal" variant="solid">
-            Click me
-          </Button>
-        </HStack>
+        <h1>Enter your username and job title!!!</h1>
+        <form></form>
       </main>
     </div>
   );
