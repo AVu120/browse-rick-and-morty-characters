@@ -1,7 +1,7 @@
 "use client";
 
-import { Field, Input, Text, Heading, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { Field, Input, Heading, Button, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 /* TODO:
 1. Create entry form for username + job title page.
@@ -29,6 +29,18 @@ import { useState } from "react";
 export default function Home() {
   const [username, setUsername] = useState("");
   const [jobTitle, setJobTitle] = useState("");
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  // Represents completion of the initial load of the page (and fetching of any potential user data from localStorage).
+  // Added to prevent weird flickering of the form/page when the user data is being fetched from localStorage on initial page load. This is done by
+  // rendering a loading indicator until the user data has been fetched and the form can be rendered with the user data.
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  // Need to do this in useEffect since window object is only available after component has mounted on client. Doing this outside of useEffect results in window not defined error on server side.
+  useEffect(() => {
+    setUsername(localStorage.getItem("username") || "");
+    setJobTitle(localStorage.getItem("jobTitle") || "");
+    setHasLoaded(true);
+  }, []);
 
   const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -38,36 +50,60 @@ export default function Home() {
     setJobTitle(e.target.value);
   };
 
+  const onSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    setHasSubmitted(true);
+    if (!username || !jobTitle) {
+      return alert("Please fill out all fields");
+    }
+
+    localStorage.setItem("username", username);
+    localStorage.setItem("jobTitle", jobTitle);
+    alert("Details saved successfully");
+  };
+
+  const isDisabled = !username || !jobTitle;
+
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main className="flex flex-col gap-4">
-        <Heading as="h1">Enter your username and job title!!!</Heading>
-        <form className="flex flex-col gap-4">
-          <Field.Root invalid={!username}>
-            <Field.Label>Username</Field.Label>
-            <Input
-              onChange={changeUsername}
-              value={username}
-              placeholder="Enter your username"
-            />
-            <Field.ErrorText>This field is required</Field.ErrorText>
-          </Field.Root>
-          <Field.Root invalid={!jobTitle}>
-            <Field.Label>Job Title</Field.Label>
-            <Input
-              onChange={changeJobTitle}
-              value={jobTitle}
-              placeholder="Enter your username"
-            />
-            <Field.ErrorText>This field is required</Field.ErrorText>
-          </Field.Root>
-          <div className="flex justify-end">
-            <Button colorPalette="teal" variant="solid" className="">
-              Save
-            </Button>
-          </div>
-        </form>
-      </main>
+      {hasLoaded ? (
+        <main className="flex flex-col gap-4">
+          <Heading as="h1">Enter your username and job title!!!</Heading>
+          <form className="flex flex-col gap-4" onSubmit={onSave}>
+            <Field.Root invalid={hasSubmitted && !username}>
+              <Field.Label>Username</Field.Label>
+              <Input
+                onChange={changeUsername}
+                value={username}
+                placeholder="Enter your username"
+              />
+              <Field.ErrorText>This field is required</Field.ErrorText>
+            </Field.Root>
+            <Field.Root invalid={hasSubmitted && !jobTitle}>
+              <Field.Label>Job Title</Field.Label>
+              <Input
+                onChange={changeJobTitle}
+                value={jobTitle}
+                placeholder="Enter your job title"
+              />
+              <Field.ErrorText>This field is required</Field.ErrorText>
+            </Field.Root>
+            <div className="flex justify-end">
+              <Button
+                colorPalette={isDisabled ? "gray" : "teal"}
+                variant="solid"
+                className=""
+                type="submit"
+                disabled={isDisabled}
+              >
+                Save
+              </Button>
+            </div>
+          </form>
+        </main>
+      ) : (
+        <Text>Loading... </Text>
+      )}
     </div>
   );
 }
