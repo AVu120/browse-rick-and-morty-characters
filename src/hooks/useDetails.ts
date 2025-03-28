@@ -17,6 +17,12 @@ export const useDetails = () => {
    rendering a loading indicator until the user data has been fetched and the page can be rendered with the user data if it exists. */
   const [hasLoaded, setHasLoaded] = useState(false);
 
+  const updateDetails = (username: string, jobTitle: string) => {
+    localStorage.setItem("username", username);
+    localStorage.setItem("jobTitle", jobTitle);
+    setUsername(username);
+    setJobTitle(jobTitle);
+  };
   // Need to do this in useEffect since window object is only available after component has mounted on client. Doing this outside of useEffect results in window not defined error on server side.
   useEffect(() => {
     const initialUsername = localStorage.getItem("username") || "";
@@ -35,5 +41,12 @@ export const useDetails = () => {
     setHasLoaded(true);
   }, []);
 
-  return { username, setUsername, jobTitle, setJobTitle, hasLoaded };
+  return {
+    username,
+    setUsername,
+    jobTitle,
+    setJobTitle,
+    hasLoaded,
+    updateDetails,
+  };
 };

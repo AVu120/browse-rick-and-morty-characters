@@ -30,8 +30,8 @@ import { useDetails } from "~/hooks/useDetails";
 export default function Home() {
   const { username, setUsername, jobTitle, setJobTitle, hasLoaded } =
     useDetails();
-  console.log({ username, setUsername, jobTitle, setJobTitle, hasLoaded });
   const router = useRouter();
+  // const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
