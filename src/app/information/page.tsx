@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Box,
   Button,
   CloseButton,
   Dialog,
@@ -14,8 +15,9 @@ import {
 import { useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useDetails } from "~/hooks/useDetails";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { apolloClient } from "~/lib/apollo-client";
+import { CardHorizontal } from "~/components/ui/card";
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int) {
@@ -45,6 +47,7 @@ export default function Home() {
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  // const [characters, setCharacters] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
 
   const changeCurrentUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +96,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <Box className="flex flex-col min-h-screen">
       <Flex
         as="nav"
         bg="teal.500"
@@ -101,6 +104,7 @@ export default function Home() {
         p={4}
         justify="space-between"
         align="center"
+        mb={4}
       >
         <Text mx={2} fontWeight="bold">
           {hasLoaded
@@ -167,9 +171,9 @@ export default function Home() {
       </Flex>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center flex-grow">
-        <Text>Placeholder for paginated list.</Text>
-      </div>
-    </div>
+      <Box className="flex flex-col gap-4 items-center justify-center flex-grow">
+        {<CardHorizontal />}
+      </Box>
+    </Box>
   );
 }
