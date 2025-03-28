@@ -1,4 +1,7 @@
-// import { Input } from "@chakra-ui/react";
+"use client";
+
+import { Field, Input, Text, Heading, Button } from "@chakra-ui/react";
+import { useState } from "react";
 
 /* TODO:
 1. Create entry form for username + job title page.
@@ -24,11 +27,46 @@
 19. (Would do if had more time) Block direct git push to remote main branch, get these CI tests to run on PR branch and block merge until this passes. 
 */
 export default function Home() {
+  const [username, setUsername] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+
+  const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const changeJobTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setJobTitle(e.target.value);
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <main>
-        <h1>Enter your username and job title!!!</h1>
-        <form></form>
+      <main className="flex flex-col gap-4">
+        <Heading as="h1">Enter your username and job title!!!</Heading>
+        <form className="flex flex-col gap-4">
+          <Field.Root invalid={!username}>
+            <Field.Label>Username</Field.Label>
+            <Input
+              onChange={changeUsername}
+              value={username}
+              placeholder="Enter your username"
+            />
+            <Field.ErrorText>This field is required</Field.ErrorText>
+          </Field.Root>
+          <Field.Root invalid={!jobTitle}>
+            <Field.Label>Job Title</Field.Label>
+            <Input
+              onChange={changeJobTitle}
+              value={jobTitle}
+              placeholder="Enter your username"
+            />
+            <Field.ErrorText>This field is required</Field.ErrorText>
+          </Field.Root>
+          <div className="flex justify-end">
+            <Button colorPalette="teal" variant="solid" className="">
+              Save
+            </Button>
+          </div>
+        </form>
       </main>
     </div>
   );
