@@ -30,8 +30,8 @@ import { useDetails } from "~/hooks/useDetails";
 export default function Home() {
   const { username, setUsername, jobTitle, setJobTitle, hasLoaded } =
     useDetails();
+  console.log({ username, setUsername, jobTitle, setJobTitle, hasLoaded });
   const router = useRouter();
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const changeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -43,7 +43,6 @@ export default function Home() {
 
   const onSave = (e: React.FormEvent) => {
     e.preventDefault();
-    setHasSubmitted(true);
     if (!username || !jobTitle) {
       return alert("Please fill out all fields");
     }
@@ -62,7 +61,7 @@ export default function Home() {
         <main className="flex flex-col gap-4">
           <Heading as="h1">Enter your username and job title!!!</Heading>
           <form className="flex flex-col gap-4" onSubmit={onSave}>
-            <Field.Root invalid={hasSubmitted && !username}>
+            <Field.Root invalid={!username}>
               <Field.Label>Username</Field.Label>
               <Input
                 onChange={changeUsername}
@@ -71,7 +70,7 @@ export default function Home() {
               />
               <Field.ErrorText>This field is required</Field.ErrorText>
             </Field.Root>
-            <Field.Root invalid={hasSubmitted && !jobTitle}>
+            <Field.Root invalid={!jobTitle}>
               <Field.Label>Job Title</Field.Label>
               <Input
                 onChange={changeJobTitle}
