@@ -14,12 +14,38 @@ import {
 import { useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useDetails } from "~/hooks/useDetails";
+import { gql, useQuery } from "@apollo/client";
+import { apolloClient } from "~/lib/apollo-client";
+
+const GET_CHARACTERS = gql`
+  query GetCharacters($page: Int) {
+    characters(page: $page) {
+      info {
+        count
+        pages
+        count
+        next
+        prev
+      }
+      results {
+        name
+        status
+        species
+        type
+        gender
+        image
+        created
+      }
+    }
+  }
+`;
 
 export default function Home() {
   const { username, jobTitle, hasLoaded, updateDetails } = useDetails();
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const changeCurrentUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentUsername(e.target.value);
@@ -31,10 +57,25 @@ export default function Home() {
 
   const isDisabled = !username || !jobTitle;
 
+  const fetchCharacters = (page: number) => {
+    apolloClient
+      .query({
+        query: GET_CHARACTERS,
+        variables: { page },
+      })
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  };
+
   useEffect(() => {
     setCurrentUsername(username);
     setCurrentJobTitle(jobTitle);
-  }, [username, jobTitle]);
+
+    // Only retrieve the graphql data on load if both username and jobTitle are entered.
+    if (!!username && !!jobTitle) {
+      fetchCharacters(pageNumber);
+    }
+  }, [username, jobTitle, pageNumber]);
 
   const onClose = () => {
     setCurrentUsername(username);

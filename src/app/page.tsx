@@ -6,7 +6,7 @@ import { useDetails } from "~/hooks/useDetails";
 /* TODO:
 1. Create entry form for username + job title page.
 2. fill out and click submit.
-3. save to zustand with local storage persistance
+3. save to local storage persistance
 4. navigate to separata page called "Information Page"
 5. show username + job title in header or footer
 6. enable user to change username + job title. 
