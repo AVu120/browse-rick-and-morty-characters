@@ -19,7 +19,6 @@ import { gql } from "@apollo/client";
 import { apolloClient } from "~/lib/apollo-client";
 import { CardHorizontal } from "~/components/ui/card";
 import { PaginationButtons } from "~/components/ui/paginationButtons";
-import { count } from "console";
 
 interface Character {
   name: string;
@@ -223,7 +222,7 @@ export default function Home() {
           </Portal>
         </Dialog.Root>
       </Flex>
-      <Box className="flex flex-col gap-4 items-center justify-center flex-grow">
+      <Box className="flex flex-col gap-4 items-center justify-start flex-grow">
         <PaginationButtons
           count={pagination.count}
           pageSize={20}
@@ -232,7 +231,7 @@ export default function Home() {
         />
 
         {/* Main Content */}
-        <Box>
+        <Box className="flex flex-col gap-4">
           {isFetching ? (
             <Text>Loading...</Text>
           ) : (
