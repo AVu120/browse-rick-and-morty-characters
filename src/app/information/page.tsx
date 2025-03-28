@@ -18,6 +18,8 @@ import { useDetails } from "~/hooks/useDetails";
 import { gql } from "@apollo/client";
 import { apolloClient } from "~/lib/apollo-client";
 import { CardHorizontal } from "~/components/ui/card";
+import { PaginationButtons } from "~/components/ui/paginationButtons";
+import { count } from "console";
 
 interface Character {
   name: string;
@@ -26,6 +28,13 @@ interface Character {
   image: string;
   species: string;
   status: string;
+}
+
+interface Pagination {
+  count: number;
+  pages: number;
+  next: number;
+  prev: number;
 }
 
 const GET_CHARACTERS = gql`
@@ -51,6 +60,8 @@ const GET_CHARACTERS = gql`
   }
 `;
 
+const DEFAULT_PAGE_NUMBER = 1;
+
 export default function Home() {
   const { username, jobTitle, hasLoaded, updateDetails } = useDetails();
   const [currentUsername, setCurrentUsername] = useState("");
@@ -58,7 +69,13 @@ export default function Home() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-  // const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER);
+  const [pagination, setPagination] = useState({
+    count: 0,
+    pages: 0,
+    next: 0,
+    prev: 0,
+  });
 
   const changeCurrentUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentUsername(e.target.value);
@@ -91,6 +108,13 @@ export default function Home() {
             status: result.status,
           }));
         console.log({ charactersResponse });
+        const paginationResponse: Pagination = result.data.characters.info;
+        setPagination({
+          count: paginationResponse.count,
+          pages: paginationResponse.pages,
+          next: paginationResponse.next,
+          prev: paginationResponse.prev,
+        });
 
         setCharacters(charactersResponse);
       })
@@ -101,12 +125,14 @@ export default function Home() {
   useEffect(() => {
     setCurrentUsername(username);
     setCurrentJobTitle(jobTitle);
+  }, [username, jobTitle]);
 
+  useEffect(() => {
     // Only retrieve the graphql data on load if both username and jobTitle are entered.
     if (!!username && !!jobTitle) {
-      fetchCharacters(1);
+      fetchCharacters(pageNumber);
     }
-  }, [username, jobTitle]);
+  }, [username, jobTitle, pageNumber]);
 
   const onClose = () => {
     setCurrentUsername(username);
@@ -197,16 +223,24 @@ export default function Home() {
           </Portal>
         </Dialog.Root>
       </Flex>
-
-      {/* Main Content */}
       <Box className="flex flex-col gap-4 items-center justify-center flex-grow">
-        {isFetching ? (
-          <Text>Loading...</Text>
-        ) : (
-          characters.map(({ name, image }) => (
-            <CardHorizontal key={name} name={name} imageUrl={image} />
-          ))
-        )}
+        <PaginationButtons
+          count={pagination.count}
+          pageSize={20}
+          defaultPageNumber={DEFAULT_PAGE_NUMBER}
+          setPageNumber={setPageNumber}
+        />
+
+        {/* Main Content */}
+        <Box>
+          {isFetching ? (
+            <Text>Loading...</Text>
+          ) : (
+            characters.map(({ name, image }) => (
+              <CardHorizontal key={name + image} name={name} imageUrl={image} />
+            ))
+          )}
+        </Box>
       </Box>
     </Box>
   );

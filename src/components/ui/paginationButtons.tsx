@@ -3,9 +3,26 @@
 import { ButtonGroup, IconButton, Pagination } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
-export const PaginationButtons = () => {
+interface Props {
+  count: number;
+  pageSize: number;
+  defaultPageNumber: number;
+  setPageNumber: (pageNumber: number) => void;
+}
+
+export const PaginationButtons = ({
+  count,
+  pageSize,
+  defaultPageNumber,
+  setPageNumber,
+}: Props) => {
   return (
-    <Pagination.Root count={20} pageSize={2} defaultPage={1}>
+    <Pagination.Root
+      count={count}
+      pageSize={pageSize}
+      defaultPage={defaultPageNumber}
+      onPageChange={(e) => setPageNumber(e.page)}
+    >
       <ButtonGroup variant="ghost" size="sm">
         <Pagination.PrevTrigger asChild>
           <IconButton>
