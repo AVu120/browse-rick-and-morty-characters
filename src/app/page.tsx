@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Field, Input, Heading, Button, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useCheckDetails } from "~/hooks/useCheckDetails";
 
 /* TODO:
 1. Create entry form for username + job title page.
@@ -27,6 +28,7 @@ import { useEffect, useState } from "react";
 19. (Would do if had more time) Block direct git push to remote main branch, get these CI tests to run on PR branch and block merge until this passes. 
 */
 export default function Home() {
+  useCheckDetails();
   const router = useRouter();
 
   const [username, setUsername] = useState("");
