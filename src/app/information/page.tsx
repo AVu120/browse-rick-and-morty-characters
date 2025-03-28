@@ -57,7 +57,8 @@ export default function Home() {
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [isFetching, setIsFetching] = useState(false);
+  // const [pageNumber, setPageNumber] = useState(1);
 
   const changeCurrentUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentUsername(e.target.value);
@@ -70,6 +71,9 @@ export default function Home() {
   const isDisabled = !username || !jobTitle;
 
   const fetchCharacters = (page: number) => {
+    // Doing call here instead of using useQuery because I don't want to run this on component mount.
+    // I only want to run this when I need to (e.g. event-driven) such as when both username and jobTitle are entered.
+    setIsFetching(true);
     apolloClient
       .query({
         query: GET_CHARACTERS,
@@ -90,7 +94,8 @@ export default function Home() {
 
         setCharacters(charactersResponse);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setIsFetching(false));
   };
 
   useEffect(() => {
@@ -99,9 +104,9 @@ export default function Home() {
 
     // Only retrieve the graphql data on load if both username and jobTitle are entered.
     if (!!username && !!jobTitle) {
-      fetchCharacters(pageNumber);
+      fetchCharacters(1);
     }
-  }, [username, jobTitle, pageNumber]);
+  }, [username, jobTitle]);
 
   const onClose = () => {
     setCurrentUsername(username);
@@ -195,9 +200,13 @@ export default function Home() {
 
       {/* Main Content */}
       <Box className="flex flex-col gap-4 items-center justify-center flex-grow">
-        {characters.map(({ name, image }) => (
-          <CardHorizontal key={name} name={name} imageUrl={image} />
-        ))}
+        {isFetching ? (
+          <Text>Loading...</Text>
+        ) : (
+          characters.map(({ name, image }) => (
+            <CardHorizontal key={name} name={name} imageUrl={image} />
+          ))
+        )}
       </Box>
     </Box>
   );
