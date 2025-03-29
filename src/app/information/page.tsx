@@ -248,7 +248,7 @@ function InformationContent() {
         />
 
         {/* Main Content */}
-        <Box className="flex flex-col gap-4">
+        <Box className="flex flex-col gap-4" marginBottom={4}>
           {isFetching ? (
             <Text>Loading...</Text>
           ) : (
