@@ -40,6 +40,14 @@ export const CardHorizontal = ({
         boxShadow="md"
         borderWidth="1px"
         borderRadius="lg"
+        cursor="pointer"
+        tabIndex={0} // Makes the card tabbable
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            e.currentTarget.click(); // Simulates a click to open the dialog
+          }
+        }}
       >
         <Image
           objectFit="cover"
