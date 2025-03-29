@@ -65,7 +65,11 @@ export const CardHorizontal = ({
       </Card.Root>
     </Dialog.Trigger>
     <Portal>
-      <Dialog.Backdrop />
+      <Dialog.Backdrop
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.8)", // Further increased opacity for darker background
+        }}
+      />
       <Dialog.Positioner>
         <Dialog.Content>
           <Dialog.Header>
