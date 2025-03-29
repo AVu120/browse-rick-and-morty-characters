@@ -28,16 +28,19 @@ export const useDetails = () => {
     const initialUsername = localStorage.getItem("username") || "";
     const initialJobTitle = localStorage.getItem("jobTitle") || "";
 
-    if (pathname === "/information" && (!initialUsername || !initialJobTitle)) {
+    if (
+      pathname.toLowerCase().startsWith("/information") &&
+      (!initialUsername || !initialJobTitle)
+    ) {
       return router.push("/");
     } else if (pathname === "/" && !!initialUsername && !!initialJobTitle) {
-      return router.push("/information");
+      return router.push("/information?page=1");
     }
 
     setUsername(initialUsername);
     setJobTitle(initialJobTitle);
     setHasLoaded(true);
-  }, []);
+  }, [pathname, router]);
 
   return {
     username,

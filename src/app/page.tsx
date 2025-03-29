@@ -58,7 +58,7 @@ export default function Home() {
     <div className="flex items-center justify-center min-h-screen">
       {hasLoaded ? (
         <main className="flex flex-col gap-4">
-          <Heading as="h1">Enter your username and job title!!!</Heading>
+          <Heading as="h1">Enter your username and job title</Heading>
           <form className="flex flex-col gap-4" onSubmit={onSave}>
             <Field.Root invalid={!username}>
               <Field.Label>Username</Field.Label>
