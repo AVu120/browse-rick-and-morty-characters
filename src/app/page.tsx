@@ -80,9 +80,8 @@ export default function Home() {
             </Field.Root>
             <div className="flex justify-end">
               <Button
-                colorPalette={isDisabled ? "gray" : "teal"}
+                colorPalette="teal"
                 variant="solid"
-                className=""
                 type="submit"
                 disabled={isDisabled}
               >

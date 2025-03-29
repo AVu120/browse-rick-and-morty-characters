@@ -29,10 +29,8 @@ export const useDetails = () => {
     const initialJobTitle = localStorage.getItem("jobTitle") || "";
 
     if (pathname === "/information" && (!initialUsername || !initialJobTitle)) {
-      console.log("User details not found. Navigating to home page.");
       return router.push("/");
     } else if (pathname === "/" && !!initialUsername && !!initialJobTitle) {
-      console.log("User details found. Navigating to information page.");
       return router.push("/information");
     }
 

@@ -23,7 +23,6 @@ export default function EditDetailsModal({
   updateDetails,
   children,
 }: EditDetailsModalProps) {
-  console.log({ username, jobTitle });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentUsername, setCurrentUsername] = useState(username);
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
@@ -101,7 +100,12 @@ export default function EditDetailsModal({
                     Cancel
                   </Button>
                 </Dialog.ActionTrigger>
-                <Button disabled={isDisabled} type="submit">
+                <Button
+                  disabled={isDisabled}
+                  colorPalette="teal"
+                  variant="solid"
+                  type="submit"
+                >
                   Save
                 </Button>
               </Dialog.Footer>
