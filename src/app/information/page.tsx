@@ -19,6 +19,7 @@ import { gql } from "@apollo/client";
 import { apolloClient } from "~/lib/apollo-client";
 import { CardHorizontal } from "~/components/ui/card";
 import { PaginationButtons } from "~/components/ui/paginationButtons";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Character {
   name: string;
@@ -62,13 +63,18 @@ const GET_CHARACTERS = gql`
 const DEFAULT_PAGE_NUMBER = 1;
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pageQueryParam = searchParams.get("page");
+  const pageNumber = parseInt(pageQueryParam || "");
+
   const { username, jobTitle, hasLoaded, updateDetails } = useDetails();
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-  const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_NUMBER);
+
   const [pagination, setPagination] = useState({
     count: 0,
     pages: 0,
@@ -87,6 +93,7 @@ export default function Home() {
   const isDisabled = !username || !jobTitle;
 
   const fetchCharacters = (page: number) => {
+    console.log("Fetching characters...");
     // Doing call here instead of using useQuery because I don't want to run this on component mount.
     // I only want to run this when I need to (e.g. event-driven) such as when both username and jobTitle are entered.
     setIsFetching(true);
@@ -124,11 +131,23 @@ export default function Home() {
     setCurrentJobTitle(jobTitle);
   }, [username, jobTitle]);
 
+  const updatePageNumber = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    router.replace(`?${params.toString()}`); // this won't reload the page
+  };
+
   useEffect(() => {
-    // Only retrieve the graphql data on load if both username and jobTitle are entered.
-    if (!!username && !!jobTitle) {
-      fetchCharacters(pageNumber);
+    if (!!pageNumber) {
+      // Only retrieve the graphql data on load if both username, jobTitle and queryParam are entered.
+      if (!!username && !!jobTitle) {
+        fetchCharacters(pageNumber);
+      }
+      // If pageQueryParam is not present, set it to 1.
+    } else {
+      updatePageNumber(DEFAULT_PAGE_NUMBER);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username, jobTitle, pageNumber]);
 
   const onClose = () => {
@@ -224,8 +243,8 @@ export default function Home() {
         <PaginationButtons
           count={pagination.count}
           pageSize={20}
-          defaultPageNumber={DEFAULT_PAGE_NUMBER}
-          setPageNumber={setPageNumber}
+          defaultPageNumber={pageNumber}
+          onChangePageNumber={updatePageNumber}
         />
 
         {/* Main Content */}

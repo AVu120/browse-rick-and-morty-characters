@@ -7,21 +7,21 @@ interface Props {
   count: number;
   pageSize: number;
   defaultPageNumber: number;
-  setPageNumber: (pageNumber: number) => void;
+  onChangePageNumber: (pageNumber: number) => void;
 }
 
 export const PaginationButtons = ({
   count,
   pageSize,
   defaultPageNumber,
-  setPageNumber,
+  onChangePageNumber,
 }: Props) => {
   return (
     <Pagination.Root
       count={count}
       pageSize={pageSize}
       defaultPage={defaultPageNumber}
-      onPageChange={(e) => setPageNumber(e.page)}
+      onPageChange={(e) => onChangePageNumber(e.page)}
     >
       <ButtonGroup variant="ghost" size="sm">
         <Pagination.PrevTrigger asChild>
