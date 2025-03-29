@@ -252,9 +252,19 @@ export default function Home() {
           {isFetching ? (
             <Text>Loading...</Text>
           ) : (
-            characters.map(({ name, image }) => (
-              <CardHorizontal key={name + image} name={name} imageUrl={image} />
-            ))
+            characters.map(
+              ({ name, image, created, gender, species, status }) => (
+                <CardHorizontal
+                  key={name + image}
+                  name={name}
+                  imageUrl={image}
+                  created={created}
+                  gender={gender}
+                  species={species}
+                  status={status}
+                />
+              )
+            )
           )}
         </Box>
       </Box>
