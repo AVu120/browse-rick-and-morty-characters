@@ -178,7 +178,7 @@ export default function Home() {
       >
         <Text mx={2} fontWeight="bold">
           {hasLoaded
-            ? `Hello ${username} with job title: ${jobTitle}`
+            ? `Information Page: Hello ${username} (${jobTitle})`
             : "Loading..."}
         </Text>
 
