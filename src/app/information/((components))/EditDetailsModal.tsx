@@ -23,6 +23,7 @@ export default function EditDetailsModal({
   updateDetails,
   children,
 }: EditDetailsModalProps) {
+  console.log({ username, jobTitle });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentUsername, setCurrentUsername] = useState(username);
   const [currentJobTitle, setCurrentJobTitle] = useState(jobTitle);
@@ -43,6 +44,12 @@ export default function EditDetailsModal({
     setIsEditModalOpen(false);
   };
 
+  const onOpen = () => {
+    setCurrentUsername(username);
+    setCurrentJobTitle(jobTitle);
+    setIsEditModalOpen(true);
+  };
+
   const onSave = (e: FormEvent) => {
     e.preventDefault();
     if (!currentUsername || !currentJobTitle) {
@@ -57,7 +64,7 @@ export default function EditDetailsModal({
     <Dialog.Root
       size="full"
       open={isEditModalOpen}
-      onOpenChange={(e) => setIsEditModalOpen(e.open)}
+      onOpenChange={(e) => (e.open ? onOpen() : onClose())}
     >
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Portal>
