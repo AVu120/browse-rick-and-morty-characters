@@ -9,7 +9,7 @@ import { apolloClient } from "~/lib/apollo-client";
 import { CardHorizontal } from "~/components/ui/Card";
 import { PaginationButtons } from "~/components/ui/PaginationButtons";
 import { useRouter, useSearchParams } from "next/navigation";
-import EditDetailsModal from "./((components))/editDetailsModal";
+import EditDetailsModal from "./((components))/EditDetailsModal";
 
 interface Character {
   name: string;
