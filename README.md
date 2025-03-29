@@ -5,7 +5,8 @@
 - Performant as possible by moving state as far down the component tree as possible.
 - Used as few dependencies as possible. Local storage used as the preferred choice of on-disc state/data persistence.
 - Built to be responsive across mobile and design.
-- Uses apollo client to query public ricky and morty graphql API (https://rickandmortyapi.com/graphql).
+- Pagination state (e.g. current page number) is preserved via url.
+- Uses apollo client to query images and data from public ricky and morty graphql API (https://rickandmortyapi.com/graphql) then render them as a paginated list.
 - Chakra-UI v3 used for UI component library.
 - NextJS v15 with App Router & TypeScript used.
 
