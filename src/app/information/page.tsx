@@ -12,13 +12,13 @@ import {
   Portal,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useDetails } from "~/hooks/useDetails";
 import { gql } from "@apollo/client";
 import { apolloClient } from "~/lib/apollo-client";
-import { CardHorizontal } from "~/components/ui/card";
-import { PaginationButtons } from "~/components/ui/paginationButtons";
+import { CardHorizontal } from "~/components/ui/Card";
+import { PaginationButtons } from "~/components/ui/PaginationButtons";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface Character {
@@ -62,7 +62,7 @@ const GET_CHARACTERS = gql`
 
 const DEFAULT_PAGE_NUMBER = 1;
 
-export default function Home() {
+function InformationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pageQueryParam = searchParams.get("page");
@@ -269,5 +269,13 @@ export default function Home() {
         </Box>
       </Box>
     </Box>
+  );
+}
+
+export default function Information() {
+  return (
+    <Suspense fallback={<Text>Loading...</Text>}>
+      <InformationContent />
+    </Suspense>
   );
 }

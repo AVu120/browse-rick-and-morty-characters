@@ -6,7 +6,6 @@ import {
   Image,
   Portal,
   Text,
-  VStack,
   HStack,
 } from "@chakra-ui/react";
 
