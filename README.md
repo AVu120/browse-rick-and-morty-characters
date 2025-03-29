@@ -1,4 +1,4 @@
-## Notes About Usage
+## Notes About Project
 
 - Accessible (entire website can be used with just keyboard e.g. by navigating using tab, enter and esc keys).
 - Compliant with device's setting of light or dark mode.
